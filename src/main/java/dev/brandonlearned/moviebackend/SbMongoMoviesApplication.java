@@ -20,7 +20,8 @@ public class SbMongoMoviesApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
 				.allowedOrigins(
-					"http://localhost:3000"
+					"http://localhost:3000",
+					"https://mongo-movies-react.herokuapp.com"
 				)
 				.allowedMethods("DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT")
 				.allowCredentials(true);
