@@ -21,7 +21,7 @@ public class SbMongoMoviesApplication {
 				registry.addMapping("/**")
 				.allowedOrigins(
 					"http://localhost:3000",
-					"https://mongo-movies-react.herokuapp.com"
+					"https://mongo-movies.netlify.app"
 				)
 				.allowedMethods("DELETE", "GET", "HEAD", "OPTIONS", "POST", "PUT")
 				.allowCredentials(true);
