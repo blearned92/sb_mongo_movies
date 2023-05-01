@@ -24,4 +24,9 @@ public class MovieService {
 		return movieRepository.findByImdbId(id);
 	}
 	
+	public Movie createMovie(String imdbId) {
+		Movie movie = movieRepository.insert(new Movie(imdbId));
+		return movie;
+	}
+	
 }

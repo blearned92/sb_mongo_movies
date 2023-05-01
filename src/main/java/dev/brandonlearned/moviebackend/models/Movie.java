@@ -20,12 +20,16 @@ public class Movie {
 	@Id
 	private ObjectId id;
 	private String imdbId;
-	private String title;
-	private String releaseDate;
-	private String trailerLink;
-	private String poster;
-	private List<String> genres;
-	private List<String> backdrops;
+//	private String title;
+//	private String releaseDate;
+//	private String trailerLink;
+//	private String poster;
+//	private List<String> genres;
+//	private List<String> backdrops;
 	@DocumentReference //calls db to store only ids of reviews in a separate collection
 	private List<Review> reviews;
+	
+	public Movie(String imdbId) {
+		this.imdbId = imdbId;
+	}
 }

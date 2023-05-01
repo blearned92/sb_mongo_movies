@@ -1,5 +1,8 @@
 package dev.brandonlearned.moviebackend.services;
 
+import java.time.Instant;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,17 +20,36 @@ public class ReviewService {
 	ReviewRepository reviewRepository;
 	
 	@Autowired
+	MovieService movieService;
+	
+	@Autowired
 	private MongoTemplate mongoTemplate;
 	
-	public Review createReview(String reviewBody, String imdbId) {
-		Review review = reviewRepository.insert(new Review(reviewBody));
-		//updates the movie class where the imdbId passed in matches its imdbId
-		//updates its reviewIds field with this review
-		mongoTemplate.update(Movie.class)
-			.matching(Criteria.where("imdbId").is(imdbId))
+	public Review createReview(Review review) {
+		
+		Optional<Movie> movie = movieService.getMovieById(review.getImdbId());
+		if(movie.isPresent()) {
+			//create review			
+			review.setTimestamp(Instant.now().toEpochMilli() / 1000);
+			Review retrunReview = reviewRepository.insert(review);			
+			//update movie class reviews array in db where imdbid matches
+			mongoTemplate.update(Movie.class)
+			.matching(Criteria.where("imdbId").is(review.getImdbId()))
 			.apply(new Update().push("reviews").value(review))
 			.first(); //only updates the first instance found that matches
+			return retrunReview;
+		} else {
+			//create movie if not exists
+			movieService.createMovie(review.getImdbId());
+			review.setTimestamp(Instant.now().toEpochMilli() / 1000);
+			Review retrunReview = reviewRepository.insert(review);			
+			mongoTemplate.update(Movie.class)
+			.matching(Criteria.where("imdbId").is(review.getImdbId()))
+			.apply(new Update().push("reviews").value(review))
+			.first(); //only updates the first instance found that matches
+			return retrunReview;	
+		}
 		
-		return review;
+		
 	}
 }
