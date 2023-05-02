@@ -21,19 +21,5 @@ public class UserController {
 	@GetMapping
 	public String checkUsernameTaken(@PathParam(value = "username") String username) {
 		return userService.checkUsernameTaken(username);
-	}
-//	
-//	//login
-//	
-//	@PostMapping("/register")
-//	public UserEntity register(@RequestBody UserEntity newUser) {
-//		return userService.postUser(newUser);
-//	}
-	
-	//register
-	//login
-	//logoutk
-	
-	
-	
+	}	
 }

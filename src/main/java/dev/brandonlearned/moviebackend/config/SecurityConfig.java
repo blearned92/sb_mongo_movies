@@ -1,6 +1,6 @@
 package dev.brandonlearned.moviebackend.config;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Bean; 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,13 +22,14 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+		.cors()
+		.and()
 		.csrf()
 		.disable()
 		.authorizeHttpRequests()
 		.requestMatchers(
 				"/api/v1/auth/**", 
 				"/api/v1/movies/**",
-				"api/v1/reviews",
 				"api/v1/users/**"
 		) //authorize all methods from these endpoints without token
 		.permitAll()
