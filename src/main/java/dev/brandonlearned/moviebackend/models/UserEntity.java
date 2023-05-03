@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import dev.brandonlearned.moviebackend.token.Token;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class UserEntity implements UserDetails{
 	private String username;
 	private String password;
 	private Role role;
+	private List<Token> tokens;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

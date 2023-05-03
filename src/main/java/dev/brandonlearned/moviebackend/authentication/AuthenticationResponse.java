@@ -1,5 +1,7 @@
 package dev.brandonlearned.moviebackend.authentication;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import dev.brandonlearned.moviebackend.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +18,9 @@ public class AuthenticationResponse {
 	private String lastname;
 	private String username;
 	private Role role;
-	private String token;
+	@JsonProperty("access_token") //renames the response
+	private String accessToken;
+	@JsonProperty("refresh_token")
+	private String refreshToken;
 	
 }

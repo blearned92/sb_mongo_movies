@@ -21,10 +21,10 @@ public class JwtService {
 	
 	@Value("${spring.application.security.jwt.secret-key}")
 	private String secretKey;
-//	@Value("${spring.application.security.jwt.expiration}")
-//	private long jwtExpiration;
-//	@Value("${spring.application.security.jwt.refresh-token.expiration}")
-//	private long refreshExpiration;
+	@Value("${spring.application.security.jwt.expiration}")
+	private long jwtExpiration;
+	@Value("${spring.application.security.jwt.refresh-token.expiration}")
+	private long refreshExpiration;
 	
 	//extracts username from token
 	public String extractUsername(String token) {
@@ -37,22 +37,35 @@ public class JwtService {
 		return claimsResolver.apply(claims);
 	}
 	
-	//generate token from userDetails alone
+	//TOKEN GENERATION METHODS
 	public String generateToken(UserDetails userDetails) {
 		return generateToken(new HashMap<>(), userDetails);
 	}
 	
-	//generate token from userDetails and claims
 	public String generateToken(
 			Map<String, Object> extraClaims,
 			UserDetails userDetails
+	) {
+		return buildToken(extraClaims, userDetails, jwtExpiration);
+	}
+	
+	public String generateRefreshToken(
+			UserDetails userDetails
+	) {
+		return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+	}
+	
+	private String buildToken(
+			Map<String, Object> extraClaims,
+			UserDetails userDetails,
+			long expiration
 	) {
 		return Jwts
 				.builder()
 				.setClaims(extraClaims)
 				.setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis())) //sets start time
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) //sets expiration to 30 minutes
+				.setExpiration(new Date(System.currentTimeMillis() + expiration)) //sets expirations
 				.signWith(getSignInKey(), SignatureAlgorithm.HS256) //creates key with hashed signature for token
 				.compact(); //generate and return token
 	}

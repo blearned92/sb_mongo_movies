@@ -1,11 +1,11 @@
 package dev.brandonlearned.moviebackend.services;
 
+import java.util.List; 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.brandonlearned.moviebackend.models.Role;
 import dev.brandonlearned.moviebackend.models.UserEntity;
 import dev.brandonlearned.moviebackend.repositories.UserRepository;
 
@@ -23,7 +23,11 @@ public class UserService {
 			return "";
 		}
 	}
-	//update user information
+
+	public List<UserEntity> findAllByRole() {
+		List<UserEntity> users = userRepository.findAllByRole();
+		return users;
+	}
 	
 	//delete user account
 	
